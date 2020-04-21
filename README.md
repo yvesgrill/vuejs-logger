@@ -1,4 +1,4 @@
-# vuejs-logger
+# vuejs-logging
 
 > ![](https://travis-ci.org/justinkames/vuejs-logger.svg?branch=master)
     [![codecov](https://codecov.io/gh/justinkames/vuejs-logger/branch/master/graph/badge.svg)](https://codecov.io/gh/justinkames/vuejs-logger)
@@ -6,7 +6,7 @@
     [![npm](https://img.shields.io/npm/dw/vuejs-logger.svg)](https://www.npmjs.com/package/vuejs-logger)
     [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/justinkames/vuejs-logger/master/LICENSE)
 
-> Provides customizable logging functionality for Vue.js. Compatible with Vue2.
+> Provides customizable logging facade functionality for Vue.js in the spirit of apache commons logging. Compatible with Vue2.
 
 ## Table of Contents
 
