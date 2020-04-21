@@ -1,12 +1,12 @@
 {
-  "name": "vuejs-logger",
+  "name": "vue-logging",
   "license": "MIT",
-  "author": "Justin Kames",
-  "description": "vuejs-logger, provides customizable logging functionality for Vue.js.",
-  "version": "1.5.4",
+  "author": "Yves Grill",
+  "description": "vue-logging, provides logging facade for Vue.js.",
+  "version": "1.0.2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/justinkames/vuejs-logger.git"
+    "url": "https://github.com/yvesgrill/vuejs-logger.git"
   },
   "main": "dist/index.js",
   "scripts": {
@@ -23,7 +23,8 @@
     "ts-jest": "25.1.0",
     "typescript": "3.7.5",
     "chai": "4.2.0",
-    "codecov": "3.6.2"
+    "codecov": "3.6.2",
+    "log4javascript": "1.4.15"
   },
   "dependencies": {
     "vue": "2.6.11",

@@ -3,7 +3,7 @@
  */
 import Vue = require('vue');
 
-import * as VueLogger from '../../index';
+import * as VueLogging from '../../index';
 
 export interface Log {
     debug(...args: any[]): void;
@@ -23,4 +23,4 @@ declare module 'vue/types/vue' {
     }
 }
 
-export default VueLogger;
+export default VueLogging;

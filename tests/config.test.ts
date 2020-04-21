@@ -1,14 +1,21 @@
 import {strict, strictEqual} from "assert";
-import VueLogger from "../src/index";
+import VueLogging from "../src/index";
 import {LogLevels} from "../src/enum/log-levels";
+import {DummyLogger} from "../src//dummy/dummy-logger";
 
 describe("isValidOptions()", () => {
 
     const logLevels = Object.keys(LogLevels).map((l) => l.toLowerCase());
-
-    test("isValidOptions() should pass with correct options.", () => {
-        const input = VueLogger.isValidOptions({
-            isEnabled: true,
+    const logger = new DummyLogger();
+    test("VueLogging.isValidOptions() should pass with correct options.", () => {
+        const input = VueLogging.isValidOptions({
+            logLevel: "debug",
+            loggerFactory: {getInstance(name:string) {return logger;}}
+        } as any, logLevels);
+        strictEqual(input, true);
+    });
+    test("DummyLogger.isValidOptions() should pass with correct options.", () => {
+        const input = DummyLogger.isValidOptions({
             logLevel: "debug",
             stringifyArguments: false,
             showLogLevel: false,
@@ -18,11 +25,24 @@ describe("isValidOptions()", () => {
         } as any, logLevels);
         strictEqual(input, true);
     });
+    test("VueLogging.isValidOptions() should fail with incorrect options.", () => {
 
-    test("isValidOptions() should fail with incorrect options.", () => {
+        strictEqual(VueLogging.isValidOptions({
+            logLevel: "debug",
+            loggerFactory: null,
+        } as any, logLevels), false);
+        strictEqual(VueLogging.isValidOptions({
+            logLevel: "debug",
+            loggerFactory: new Object(),
+        } as any, logLevels), false);
+        strictEqual(VueLogging.isValidOptions({
+            logLevel: "dummy",
+            loggerFactory: new Object(),
+        } as any, logLevels), false);
+    });
+    test("DummyLogger.isValidOptions() should fail with incorrect options.", () => {
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: true,
+        strictEqual(DummyLogger.isValidOptions({
             logLevel: "debug",
             stringifyArguments: false,
             showLogLevel: false,
@@ -31,8 +51,7 @@ describe("isValidOptions()", () => {
             showConsoleColors: false,
         } as any, logLevels), false);
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: true,
+        strictEqual(DummyLogger.isValidOptions({
             logLevel: "debug",
             stringifyArguments: false,
             showLogLevel: false,
@@ -41,8 +60,7 @@ describe("isValidOptions()", () => {
             showConsoleColors: "FOO",
         } as any, logLevels), false);
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: true,
+        strictEqual(DummyLogger.isValidOptions({
             logLevel: "debug",
             stringifyArguments: false,
             showLogLevel: false,
@@ -51,8 +69,7 @@ describe("isValidOptions()", () => {
             showConsoleColors: false,
         } as any, logLevels), false);
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: true,
+        strictEqual(DummyLogger.isValidOptions({
             logLevel: "debug",
             stringifyArguments: "TEST",
             showLogLevel: false,
@@ -61,8 +78,7 @@ describe("isValidOptions()", () => {
             showConsoleColors: false,
         } as any, logLevels), false);
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: true,
+        strictEqual(DummyLogger.isValidOptions({
             logLevel: "debug",
             stringifyArguments: false,
             showLogLevel: "TEST",
@@ -71,8 +87,7 @@ describe("isValidOptions()", () => {
             showConsoleColors: false,
         } as any, logLevels), false);
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: true,
+        strictEqual(DummyLogger.isValidOptions({
             logLevel: "TEST",
             stringifyArguments: false,
             showLogLevel: false,
@@ -81,19 +96,17 @@ describe("isValidOptions()", () => {
             showConsoleColors: false,
         } as any, logLevels), false);
 
-        strictEqual(VueLogger.isValidOptions({
+        strictEqual(DummyLogger.isValidOptions({
             logLevel: "debug",
             isEnabled: true,
         } as any, logLevels), true);
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: "",
+        strictEqual(DummyLogger.isValidOptions({
             logLevel: "debug",
             separator: "1234",
         } as any, logLevels), false);
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: true,
+        strictEqual(DummyLogger.isValidOptions({
             logLevel: "debug",
             stringifyArguments: false,
             showLogLevel: false,
@@ -102,34 +115,7 @@ describe("isValidOptions()", () => {
             showConsoleColors: false,
         } as any, logLevels), true);
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: false,
-            logLevel: "debug",
-            stringifyArguments: false,
-            showLogLevel: false,
-            showMethodName: false,
-            separator: "|",
-            showConsoleColors: false,
-        } as any, logLevels), true);
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: "",
-            logLevel: "debug",
-            stringifyArguments: false,
-            showLogLevel: false,
-            showMethodName: false,
-            separator: "|",
-            showConsoleColors: false,
-        } as any, logLevels), false);
 
-        strictEqual(VueLogger.isValidOptions({
-            isEnabled: null,
-            logLevel: "debug",
-            stringifyArguments: false,
-            showLogLevel: false,
-            showMethodName: false,
-            separator: "|",
-            showConsoleColors: false,
-        } as any, logLevels), false);
     });
 });

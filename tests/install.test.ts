@@ -1,16 +1,17 @@
 import {notStrictEqual, strictEqual} from "assert";
 import chai from "chai";
 import Vue from "vue/dist/vue.min";
-import VueLogger from "../src/index";
+import VueLogging from "../src/index";
 import {LogLevels} from "../src/enum/log-levels";
 import {ILoggerOptions} from "../src/interfaces/logger-options";
+import {IDummyLoggerOptions} from "../src/dummy/dummy-logger-options";
+import {DummyLogger} from "../src/dummy/dummy-logger";
 const expect = chai.expect;
 
 describe("vue-logger.ts", () => {
 
     test("install() should work as expected with the correct params.", () => {
-        const options: ILoggerOptions = {
-            isEnabled: true,
+        const dummyOptions: IDummyLoggerOptions = {
             logLevel: LogLevels.FATAL,
             separator: "|",
             stringifyArguments: false,
@@ -18,7 +19,12 @@ describe("vue-logger.ts", () => {
             showLogLevel: false,
             showMethodName: false,
         };
-        Vue.use(VueLogger, options);
+        const logger = new DummyLogger(dummyOptions);
+        const options: ILoggerOptions = {
+            logLevel: LogLevels.FATAL,
+            loggerFactory: { getInstance(name:string) {return logger;}}
+        };
+        Vue.use(VueLogging, options);
         expect(Vue.$log).to.be.a("object");
         strictEqual(Vue.$log.debug("debug"), undefined);
         strictEqual(Vue.$log.info("info"), undefined);
@@ -28,8 +34,7 @@ describe("vue-logger.ts", () => {
     });
 
     test("install() should throw an error with the an incorrect parameter.", () => {
-        const options: any = {
-            isEnabled: true,
+        const dummyOptions: any = {
             logLevel: LogLevels.DEBUG,
             separator: "|",
             stringifyArguments: false,
@@ -37,10 +42,14 @@ describe("vue-logger.ts", () => {
             showLogLevel: false,
             showMethodName: "wrong value for test.",
         };
+        const options: any = {
+            logLevel: LogLevels.DEBUG,
+            loggerFactory: null,
+        };
         expect(() => {
-            VueLogger.install(Vue, options);
+            VueLogging.install(Vue, options);
         })
             .to
-            .throw(Error, "Provided options for vuejs-logger are not valid.");
+            .throw(Error, "Provided options for vuejs-logging are not valid.");
     });
 });

@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "build",
+			"problemMatcher": [
+				"$eslint-compact"
+			],
+			"group": "build",
+			"label": "npm: build",
+			"detail": "tsc && npm test && mkdir -p ./dist/lib/types && cp src/lib/types/index.d.ts ./dist/lib/types/index.d.ts"
+		}
+	]
+}
